@@ -1,7 +1,29 @@
 use eip1962::engines::bls12_381::*;
 use eip1962::weierstrass::Group;
 use eip1962::pairings::PairingEngine;
-use eip1962::traits::FieldElement;
+use eip1962::traits::{FieldElement,ZeroAndOne};
+use eip1962::extension_towers::fp12_as_2_over3_over_2::{Fp12};
+
+fn websnark_test_case() {
+    // g1_gen * 27, g2_gen * 33, g1_gen * 999, g2_gen
+
+    let gt_one = Fp12::one(&BLS12_381_EXTENSION_12_FIELD);
+
+	let mut p = BLS12_381_G1_GENERATOR.clone().mul(vec![27]);
+	let mut q = BLS12_381_G2_GENERATOR.clone().mul(vec![33]);
+    p.normalize();
+    q.normalize();
+
+    let mut p2 = BLS12_381_G1_GENERATOR.clone().mul(vec![999]);
+    p2.negate();
+    let mut q2 = BLS12_381_G2_GENERATOR.clone();
+    p2.normalize();
+    q2.normalize();
+
+	let res = BLS12_381_PAIRING_ENGINE.pair(&[p.clone(), p2.clone()], &[q.clone(), q2.clone()]).unwrap();
+
+    assert!(res == gt_one);
+}
 
 fn three_point_pairing() {
 	let p = BLS12_381_G1_GENERATOR.clone();
@@ -23,5 +45,6 @@ fn three_point_pairing() {
 }
 
 fn main() {
-	three_point_pairing();
+	// three_point_pairing();
+    websnark_test_case();
 }
