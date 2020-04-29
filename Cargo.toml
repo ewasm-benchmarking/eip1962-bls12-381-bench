@@ -7,12 +7,12 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-eip1962 = { package = "eth_pairings", git = "https://github.com/jwasinger/eip1962", branch="bench"}
+eip1962 = { package = "eth_pairings", git = "https://github.com/jwasinger/eip1962", branch="bench-nu"}
 
 [lib]
-name = "scout_wasm_bench"
-path = "src/scout_wasm_bench.rs"
+name = "eip1962_bls_12_381_wasm"
+path = "src/lib.rs"
 
 [[bin]]
-name = "bench"
-path = "src/bench.rs"
+name = "eip1962_bls_12_381_native"
+path = "src/main.rs"
